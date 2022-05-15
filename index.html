@@ -16,9 +16,10 @@
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
       crossorigin="anonymous"
     ></script>
+    <script src="/manager.js"></script>
     <title>Document</title>
   </head>
-  <body>
+  <body onload="console.log(testing())">
     <div class="card maincard">
       <div class="card-body">
         <h5 class="card-title">Memoria Virtual</h5>
@@ -39,7 +40,7 @@
                 readonly
                 class="form-control-plaintext"
                 id="staticEmail2"
-                value="TAMAÑO SO"
+                value="Tamaño SO"
               />
             </div>
             <div class="col-auto">
@@ -49,13 +50,11 @@
               <input
                 type="number"
                 class="form-control"
-                id="inputPassword2"
+                id="tam_SO"
                 placeholder="TAMAÑO EN PALABRAS"
               />
             </div>
-            <div class="col-auto">
-              <button type="submit" class="btn btn-primary mb-3">CARGAR</button>
-            </div>
+            <div class="col-auto"></div>
           </form>
           <form class="row g-3">
             <div class="col-auto">
@@ -65,69 +64,75 @@
                 readonly
                 class="form-control-plaintext"
                 id="staticEmail2"
-                value="Tamaño marco"
+                value="Tamaño Marco"
+                required
               />
             </div>
             <div class="col-auto">
-              <label for="inputPassword2" class="visually-hidden"
-                >Password</label
-              >
               <input
                 type="number"
                 class="form-control"
-                id="inputPassword2"
+                id="tam_MAR"
                 placeholder="TAMAÑO EN PALABRAS"
+                required
+              />
+            </div>
+          </form>
+          <form class="row g-3">
+            <div class="col-auto">
+              <input
+                type="text"
+                readonly
+                class="form-control-plaintext"
+                id="staticEmail2"
+                value="Tamaño Proceso"
+                required
               />
             </div>
             <div class="col-auto">
-              <button type="submit" class="btn btn-primary mb-3">CARGAR</button>
+              <input
+                type="number"
+                class="form-control"
+                id="tam_PROG"
+                placeholder="TAMAÑO DEL PROCESO"
+                required
+              />
             </div>
           </form>
+          <button
+            type="submit"
+            class="btn btn-primary mb-3"
+            onclick="validarData()"
+          >
+            CARGAR
+          </button>
         </div>
       </div>
       <div class="row">
         <div class="col maincard">
-          <table class="table">
+          <table id="pro_T" class="table">
             <thead>
               <tr>
                 <th scope="col">PAGINA</th>
                 <th scope="col">MARCO</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>20</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>0x</td>
-                <td>10</td>
-              </tr>
-            </tbody>
           </table>
         </div>
         <div class="col maincard discoradius">
           <h5>DISCO</h5>
-          <div class="disco">
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-            <div class="proceso box">10</div>
-          </div>
+          <div id="disco_T" class="disco"></div>
         </div>
       </div>
     </div>
+
+    <div class="skew-c"></div>
+<div class="colour-block">
+  <h1>EJECUCIÓN</h1>
+  <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> -->
+</div>
+<div class="skew-cc"></div>
+<div class="white-block">
+<div class ></div>
   </body>
 </html>

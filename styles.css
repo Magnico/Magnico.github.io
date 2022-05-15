@@ -5,6 +5,9 @@
   margin: 10px;
   margin-bottom: 50px;
 }
+form{ 
+  margin-bottom: 20px;
+}
 
 .box {
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -25,7 +28,7 @@
 }
 
 .pink {
-  box-shadow: rgb(255, 192, 203);
+  box-shadow: #ffbfca;
 }
 
 .datos {
@@ -33,4 +36,82 @@
   width: fit-content;
   margin: 20px auto;
   padding: 20px;
+}
+
+body {
+  margin:0px;
+}
+.colour-block {
+  background:#369A7E;
+  width:60%;
+  padding:7% 20% 10% 20%;
+  color:#fff;
+}
+.white-block {
+  background:#fff;
+  width:60%;
+  padding:7% 20% 10% 20%;
+  color:#369A7E;
+}
+h1 {
+  text-align:center;
+  font-size:80px;
+  font-family:'wire one', serif;
+  font-weight:normal;
+}
+p {
+  font-size:20px;
+  font-family:'Raleway', serif;
+}
+
+
+body {
+  margin:0px;
+}
+.colour-block {
+  background:#ffbfca;
+  width:60%;
+  padding:7% 20% 10% 20%;
+  margin:0;
+  color:#fff;
+}
+.white-block {
+  background:#fff;
+  width:60%;
+  padding:7% 20% 10% 20%;
+  color:#ffbfca;
+}
+h1 {
+  text-align:center;
+  font-size:80px;
+  font-family:'wire one', serif;
+  font-weight:normal;
+}
+p {
+  font-size:20px;
+  font-family:'Raleway', serif;
+}
+
+
+/*------------------*/
+/*  SKEW CLOCKWISE  */
+/*------------------*/
+.skew-cc{
+  width:100%;
+  height:100px;
+  position:absolute;
+  left:0px;
+  background: linear-gradient(to right bottom, #ffbfca 49%, #fff 50%),    linear-gradient(-50deg, #ffffff 16px, #000 0);
+}
+
+
+/*-------------------------*/
+/* SKEW COUNTER CLOCKWISE  */
+/*-------------------------*/
+.skew-c{
+  width:100%;
+  height:100px;
+  position:absolute;
+  left:0px;
+  background: linear-gradient(to left bottom, #fff 49%, #ffbfca 50%);
 }
