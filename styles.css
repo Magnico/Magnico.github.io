@@ -4,31 +4,81 @@
   border: none;
   margin: 10px;
   margin-bottom: 50px;
+  /* overflow: scroll; */
+  /* padding: 10px; */
+}
+
+/* *::-webkit-scrollbar {
+  display: none;
+} */
+
+#prog_T{
+  overflow: scroll;
+}
+#pro_T_T{
+  height: 500px;
+  overflow: scroll;
+
 }
 form{ 
   margin-bottom: 20px;
+}
+.datos2{
+  width:100vw;
 }
 
 .box {
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   border: 1px gray dotted;
+  /* width: 50px; */
+}
+
+.margbom{ 
+  margin-bottom: 10px;
+}
+.grid{
+  display:grid;
+  place-content: center;
+  place-items: center;
 }
 .disco {
   display: grid;
-  grid-template-columns: repeat(3, 50px);
+  position: absolute;
+  grid-template-columns: repeat(5, 40px);
   gap: 10px;
   place-content: center;
-  padding: 10px;
-  /* place-items: center; */
+  /* height: fit-content; */
+  width: 500px;
+  margin-top: 20px;
+  align-items: center ;
+  /* grid-auto-rows: 25% ;  */
+  /* overflow: scroll; */
+}
+.controles{
+  position:sticky;
+  bottom:0;
+  right:0;
+  width: fit-content;
+}
+
+#ejecBtn{
+  margin: 0 auto;
 }
 
 .discoradius {
+  position: relative;
   border-radius: 50%;
   border: 2px pink dashed;
+  width: 500px;
+  overflow: scroll;
+  /* height: fit-content; */
 }
 
 .pink {
-  box-shadow: #ffbfca;
+  box-shadow: 0px 10px 15px -3px #ffbfca;
+  border: none;
+  width: 300px;
+  margin: 0 auto;
 }
 
 .datos {
@@ -103,6 +153,10 @@ p {
   left:0px;
   background: linear-gradient(to right bottom, #ffbfca 49%, #fff 50%),    linear-gradient(-50deg, #ffffff 16px, #000 0);
 }
+
+/* .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #ffbfca !important;
+} */
 
 
 /*-------------------------*/

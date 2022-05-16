@@ -19,7 +19,7 @@
     <script src="/manager.js"></script>
     <title>Document</title>
   </head>
-  <body onload="console.log(testing())">
+  <body onload="">
     <div class="card maincard">
       <div class="card-body">
         <h5 class="card-title">Memoria Virtual</h5>
@@ -109,7 +109,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col maincard">
+        <div id="pro_T_T"class="col maincard">
           <table id="pro_T" class="table">
             <thead>
               <tr>
@@ -125,14 +125,161 @@
         </div>
       </div>
     </div>
+  <div id = "ejecucion" style="display: none;">
+    <div class="card maincard ">
+      <div class="card-body">
+        <h5 class="card-title">EJECUCION</h5>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+<div class = "container  datos2">
+  <div class = "row"> 
+    <div class="col maincard" >
+      <h4>ENTRADA DE DATOS</h4>
+      <form action="">
+        <div class="col-auto">
+          <label for="inputPassword2" class="visually-hidden "
+            >Dir Logica</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="dirLog"
+            placeholder="Dir. Lógica"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="acTion">TIPO</label>
+          </div>
+          <select class="custom-select " id="acTion">
+            <option value="L" selected>LECTURA</option>
+            <option value="E">ESCRITURA</option>
+          </select>
 
-    <div class="skew-c"></div>
-<div class="colour-block">
-  <h1>EJECUCIÓN</h1>
-  <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> -->
+        </div>
+      </form>
+      <button id='accBtn' class = "btn btn-primary" onclick="ingresarSeñal()">CARGAR</button>
+    </div> 
+    <div class="col maincard grid"> 
+      <table id="acc_T" style="width:100%" class="table table-striped">
+        <tr>
+          <th>Dir. Logica</th>
+        </tr>
+        <tr>
+          <th>Acciones</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+
+    <button id='ejecBtn' class = "btn btn-primary" onclick="ejecutar()">SIMULAR</button>
+  </div>
+
+  <div class = "row maincard">
+    <div id="tablaprueba" class="col">
+      <table id="pro_T20" class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">PAGINA</th>
+            <th scope="col">DIR FISC</th>
+            <th scope="col">V/I</th>
+            <th scope="col">SUCIO</th>
+            <th scope="col">USOS</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  <div class="row maincard "> 
+    <table id="itr_T" style="width:100%" class="table table-striped">
+      <tr>
+        <th>ITERACION</th>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <th>DIR LOG</th>
+        <td>10</td>
+        <td>89</td>
+        <td>64</td>
+        <td>27</td>
+        <td>19</td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <th>ACCION</th>
+        <td>E</td>
+        <td>S</td>
+        <td>E</td>
+        <td>E</td>
+        <td>S</td>
+        <td>S</td>
+      </tr>
+      <tr>
+        <th>DIR FISC</th>
+        <td>10</td>
+        <td>89</td>
+        <td>64</td>
+        <td>27</td>
+        <td>19</td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <th>PAGINA</th>
+        <td>10</td>
+        <td>89</td>
+        <td>64</td>
+        <td>27</td>
+        <td>19</td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <th>MARCO</th>
+        <td>10</td>
+        <td>89</td>
+        <td>64</td>
+        <td>27</td>
+        <td>19</td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <th>SW IN</th>
+        <td>X</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr>
+        <th>SW OUT</th>
+        <td>X</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>X</td>
+        <td> </td>
+      </tr>
+    </table>
+  </div>
 </div>
-<div class="skew-cc"></div>
-<div class="white-block">
-<div class ></div>
+<div class="card controles">
+  <h5 class="card-header">CONTROLES</h5>
+  <div class="card-body">
+    <h5 class="card-title">Para detener, adelantar o acelerar la ejecucion</h5>
+    <a href="#" class="btn btn-danger">MOVE BACKWARD </a>
+    <a href="#" class="btn btn-primary">▶</a>
+    <a href="#" class="btn btn-success">MOVE FORWARD</a>
+  </div>
+</div>
+</div>
   </body>
 </html>
