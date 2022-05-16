@@ -8,7 +8,7 @@ var MARCOS_STATUS = [[], []]; // Marco - Pag
 var NextMarco = 0;
 var PageFallos = 0;
 var Reemplazos = 0;
-var iter = 0;
+var ITER = 0;
 function sortV(vec) {
   return vec.sort(function () {
     return Math.random() - 0.5;
@@ -144,9 +144,8 @@ function consultarMarco(NumPag, acc) {
       PROCESO[2][index] = 0;
       PROCESO[3][index] = 0;
     }
-    MARCOS_STATUS[1][NextMarco] = "M" + NumPag;
+    MARCOS_STATUS[1][NextMarco] = "P" + NumPag;
     PROCESO[2][NumPag] = 1;
-    MARCOS_STATUS[0][NextMarco];
     NextMarco = (NextMarco + 1) % 2;
   }
 
@@ -155,6 +154,7 @@ function consultarMarco(NumPag, acc) {
   }
   return { SwOut: SwOut, SwIn: SwIn, Marco: marco };
 }
+
 function solicitudAcc(iter) {
   var DirLog = ACCIONES[0][iter];
   var Acc = ACCIONES[1][iter];
@@ -169,52 +169,61 @@ function solicitudAcc(iter) {
   ACCIONES[4][iter] = Marco; //Mar
   ACCIONES[5][iter] = SwIn; //SwIn
   ACCIONES[6][iter] = SwOut; //SwOut
+  ITER++;
 }
 
-
+function step(){
+  console.log('Antes:',ITER)
+  solicitudAcc(ITER)
+  console.log('Despues:',ITER)
+}
 
 function ejecutar(){
-    debugger
+    //debugger
     var padre =  document.getElementById('tablaprueba')// edit alvaro
     var tabla=  document.getElementById('pro_T20') // edit alvaro
-    //tabla.removeChild(tabla.getElementsByTagName('tbody'))
+    if(tabla.childNodes[3] != undefined) tabla.removeChild(tabla.childNodes[3])
     var tbd = document.createElement('tbody')// edit alvaro
-    //inHtml ='<thead><tr><th scope="col">PAGINA</th><th scope="col">DIR FISC</th><th scope="col">V/I</th><th scope="col">SUCIO</th><th scope="col">USOS</th></tr></thead><tbody>'
     for (let i = 0; i < PROCESO[0].length; i++) {
-        //inHtml +='<tr>'
         var  hilera = document.createElement('tr')// edit alvaro
         for (let j = 0; j < PROCESO.length; j++) {
           var celda = document.createElement('td')// edit alvaro
           var text= document.createTextNode(PROCESO[j][i])// edit alvaro
-            //inHtml+='<td>'+PROCESO[j][i]+'</td>'
           celda.appendChild(text)// edit alvaro
           hilera.appendChild(celda)// edit alvaro
         }
         tbd.appendChild(hilera)// edit alvaro
-        //inHtml +='</tr>'
     }
-    //inHtml += '</tbody>'
     tabla.appendChild(tbd)// edit alvaro
-    document.getElementById('tablaprueba').appendChild(tabla)
-    //document.getElementById('pro_T').innerHTML = inHtml
-    debugger
-
-    /*v = ['ITERACION','DIR LOG','ACCION','DIR FISC','PAGINA','MARCO','SW IN','SW OUT']
-    inHtml = '<tr><th>'+v[0]+'</th>'
-    for (let i = 0; i < ACCIONES[1].length; i++) {
-        inHtml+='<td>'+(i+1)+'</td>'
-    }
-    inHtml = '</tr>'
-    console.log(ACCIONES.length,ACCIONES[1].length)
-    for (let i = 0; i < ACCIONES.length; i++) {
-        inHtml = '<tr><th>'+v[i+1]+'</th>'
-        for (let j = 0; j < ACCIONES[1].length; j++) {
-            inHtml+='<td>'+ACCIONES[i][j]+'</td>'
+    padre.appendChild(tabla)
+    //debugger
+    v = ['ITERACION','DIR LOG','ACCION','DIR FISC','PAGINA','MARCO','SW IN','SW OUT']
+    padre = document.getElementById('padreitr')
+    tabla=  document.getElementById('itr_T')
+    tbd = document.createElement('tbody')
+    console.log(tabla.childNodes)
+   // for (let i =0 ; i < tabla.childNodes.length; i++){
+    //  tabla.removeChild(tabla.childNodes[i])
+    //}
+    tabla.removeChild(tabla.childNodes[1])
+    console.log(tabla.childNodes)
+    for (let i = 1; i < v.length; i++) {
+      var  hilera = document.createElement('tr')// edit alvaro
+      for (let j = 0; j < ACCIONES.length; j++) {
+        if (j==0){
+          var celda = document.createElement('th')//
+          var text= document.createTextNode(v[i])
+        }else{
+          var celda = document.createElement('td')// edit alvaro
+          var text= document.createTextNode(ACCIONES[i-1][j-1])// edit alvaro
         }
-        inHtml += '</tr>'
+        celda.appendChild(text)// edit alvaro
+        hilera.appendChild(celda)// edit alvaro
+      }
+      tbd.appendChild(hilera)// edit alvaro
     }
-    document.getElementById('itr_T').innerHTML = inHtml
-    debugger*/
+    tabla.appendChild(tbd)/
+    padre.appendChild(tabla)
 }
 
 function testing() {}
