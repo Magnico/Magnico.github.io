@@ -8,6 +8,9 @@
   /* padding: 10px; */
 }
 
+#padreitr{
+  overflow-x: scroll;
+}
 /* *::-webkit-scrollbar {
   display: none;
 } */

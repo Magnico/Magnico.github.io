@@ -11,23 +11,48 @@ var Reemplazos = 0;
 var ITER = 0;
 var COUNTER = 0;
 var EJEC = false;
-var timer = setInterval(()=>{
-  if (ITER < ACCIONES[0].length & EJEC) {
-  COUNTER+=0.5;
-  document.getElementById("avancemosColombia").style = "width: "+(COUNTER%100)+"%";
-  document.getElementById("numeroIteracion").value = "Iteración "+(ITER+1);
-  if(COUNTER%100+1 == 100){
-    solicitudAcc(ITER);
-    ejecutar();
-  }
-  }
-},20)
+var VELOCITY = 20;
+setTimeout(timer, VELOCITY);
+TIMESTAMP = [Date.now(),Date.now()]
 function sortV(vec) {
   return vec.sort(function () {
     return Math.random() - 0.5;
   });
 }
 
+function timer() {
+  if ((ITER < ACCIONES[0].length) & EJEC) {
+    COUNTER ++;
+    document.getElementById("avancemosColombia").style =
+      "width: " + (COUNTER % 100) + "%";
+    document.getElementById("numeroIteracion").innerText =
+      "Iteración " + (ITER + 1);
+    if ((COUNTER % 100) + 1 == 100) {
+      TIMESTAMP[1] = Date.now()
+      console.log((TIMESTAMP[1]-TIMESTAMP[0]),'ITERACION ', ITER, COUNTER)
+      
+      solicitudAcc(ITER);
+      ejecutar();
+
+      TIMESTAMP[0] = Date.now()
+    }
+  }
+  setTimeout(timer,VELOCITY)
+  
+}
+function setVel(v) {
+  VELOCITY = v;
+}
+
+function pauseStart() {
+  EJEC = !EJEC;
+  change()
+}
+
+function change(){
+  let a = document.getElementById('pausado').innerText
+  document.getElementById('pausado').innerText = a == '▶'? '⏸' : '▶';
+}
 //__ INICIO __//
 
 function iniciar() {
@@ -42,6 +67,7 @@ function iniciar() {
   ITER = 0;
   COUNTER = 0;
   EJEC = false;
+  VELOCITY = 20;
   document.getElementById("ejecucion").style = "display: none;";
   document.getElementById("marco_disco").style = "display: flex;";
   document.getElementById("accBtn").disabled = false;
@@ -186,7 +212,7 @@ function solicitudAcc(iter) {
   ACCIONES[4][iter] = Marco; //Mar
   ACCIONES[5][iter] = SwIn; //SwIn
   ACCIONES[6][iter] = SwOut; //SwOut
-  console.log('iteracion terminada',iter)
+  console.log("iteracion terminada", iter);
   ITER++;
 }
 
@@ -241,7 +267,4 @@ function ejecutar() {
     tbd.appendChild(hilera);
   }
   tabla.appendChild(tbd) / padre.appendChild(tabla);
-  debugger;
 }
-
-

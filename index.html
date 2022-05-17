@@ -257,11 +257,13 @@
         <h5 class="card-header">CONTROLES</h5>
         <div class="card-body">
           <h5 class="card-title">
-            Para detener, adelantar o acelerar la ejecucion
+            Para pausar o acelerar la ejecucion
           </h5>
-          <button onclick="step()" class="btn btn-danger">MOVE BACKWARD</button>
-          <a class="btn btn-primary">▶</a>
-          <a class="btn btn-success">MOVE FORWARD</a>
+          <button onclick="pauseStart()" class="btn btn-danger" id="pausado">▶</button>
+          <button onclick="setVel(40)" class="btn btn-danger">V0.5</button>
+          <button onclick="setVel(20)" class="btn btn-primary">V1</button>
+          <button onclick="setVel(10)" class="btn btn-success">V2</a>
+          <button onclick="setVel(5)"  class="btn btn-success">V3</a>
         </div>
       </div>
     </div>
