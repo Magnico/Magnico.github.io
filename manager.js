@@ -9,6 +9,19 @@ var NextMarco = 0;
 var PageFallos = 0;
 var Reemplazos = 0;
 var ITER = 0;
+var COUNTER = 0;
+var EJEC = false;
+var timer = setInterval(()=>{
+  if (ITER < ACCIONES[0].length & EJEC) {
+  COUNTER+=0.5;
+  document.getElementById("avancemosColombia").style = "width: "+(COUNTER%100)+"%";
+  document.getElementById("numeroIteracion").value = "Iteración "+(ITER+1);
+  if(COUNTER%100+1 == 100){
+    solicitudAcc(ITER);
+    ejecutar();
+  }
+  }
+},20)
 function sortV(vec) {
   return vec.sort(function () {
     return Math.random() - 0.5;
@@ -26,7 +39,9 @@ function iniciar() {
   NextMarco = 0;
   PageFallos = 0;
   Reemplazos = 0;
-  iter = 0;
+  ITER = 0;
+  COUNTER = 0;
+  EJEC = false;
   document.getElementById("ejecucion").style = "display: none;";
   document.getElementById("marco_disco").style = "display: flex;";
   document.getElementById("accBtn").disabled = false;
@@ -175,15 +190,9 @@ function solicitudAcc(iter) {
   ITER++;
 }
 
-function step() {
-  if (ITER < ACCIONES[0].length) {
-    solicitudAcc(ITER);
-    ejecutar();
-  }
-}
-
 function ejecutar() {
   document.getElementById("iteracionContainer").style = "display: initial;";
+  EJEC = true;
   var padre = document.getElementById("tablaprueba");
   var tabla = document.getElementById("pro_T20");
   if (tabla.childNodes[3] != undefined) tabla.removeChild(tabla.childNodes[3]);
@@ -234,3 +243,5 @@ function ejecutar() {
   tabla.appendChild(tbd) / padre.appendChild(tabla);
   debugger;
 }
+
+
