@@ -17,23 +17,25 @@ function sortV(vec) {
 
 //__ INICIO __//
 
-function iniciar(){
-    ACCIONES = [[], [], [], [], [], [], []]
-    DISCO = []
-    SO = [[], []]
-    PROCESO = [[], [], [], [], []]
-    MARCOS_STATUS = [[], []]
-    NextMarco = 0;
-    PageFallos = 0;
-    Reemplazos = 0;
-    iter = 0;
-    document.getElementById('ejecucion').style = 'display: none;'
-    document.getElementById('accBtn').disabled = false;
-    document.getElementById('ejecBtn').disabled = true;
+function iniciar() {
+  ACCIONES = [[], [], [], [], [], [], []];
+  DISCO = [];
+  SO = [[], []];
+  PROCESO = [[], [], [], [], []];
+  MARCOS_STATUS = [[], []];
+  NextMarco = 0;
+  PageFallos = 0;
+  Reemplazos = 0;
+  iter = 0;
+  document.getElementById("ejecucion").style = "display: none;";
+  document.getElementById("marco_disco").style = "display: flex;";
+  document.getElementById("accBtn").disabled = false;
+  document.getElementById("ejecBtn").disabled = true;
+  document.getElementById("iteracionContainer").style = "display: none;";
 }
 
 function validarData() {
-  iniciar()
+  iniciar();
   var so = document.getElementById("tam_SO").value;
   var marco = document.getElementById("tam_MAR").value;
   var prog = document.getElementById("tam_PROG").value;
@@ -47,7 +49,7 @@ function validarData() {
   return false;
 }
 function crearProceso() {
-  for (let i = 0; i < (PROG / MARCO); i++) {
+  for (let i = 0; i < PROG / MARCO; i++) {
     PROCESO[0].push(i);
     PROCESO[1].push(i);
     PROCESO[2].push(0);
@@ -66,7 +68,7 @@ function crearProceso() {
   document.getElementById("pro_T").innerHTML = inHtml;
 }
 function crearSO() {
-  for (let i = 0; i < (SOS / MARCO); i++) {
+  for (let i = 0; i < SOS / MARCO; i++) {
     SO[0].push(i);
     SO[1].push(i + 2 + parseInt(PROG / MARCO));
   }
@@ -94,17 +96,16 @@ function iniciarDisco() {
   DISCO.forEach((D) => {
     inHtml += '<div class="proceso box">' + D + "</div>\n";
   });
-  document.getElementById('ejecucion').style = 'display: initial;'
+  document.getElementById("ejecucion").style = "display: initial;";
   document.getElementById("disco_T").innerHTML = inHtml;
 }
 
 //__ INPUT SEÑALES __//
 function ingresarSeñal() {
-  document.getElementById('ejecBtn').disabled = false;
+  document.getElementById("ejecBtn").disabled = false;
   var dir = document.getElementById("dirLog").value;
   var acc = document.getElementById("acTion").value;
-  console.log(dir, PROG)
-  if ((dir > 0) & (dir < PROG)) {
+  if ((dir >= 0) & (dir < PROG)) {
     ACCIONES[0].push(dir);
     ACCIONES[1].push(acc);
     inHtml = "";
@@ -118,15 +119,14 @@ function ingresarSeñal() {
     b += "</tr>";
     inHtml = a + b;
     document.getElementById("acc_T").innerHTML = inHtml;
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 function consultarMarco(NumPag, acc) {
-  var m = MARCOS_STATUS[1].indexOf("M" + NumPag);
+  var m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   var SwOut = "";
   var SwIn = "";
-  var marco = MARCOS_STATUS[0][m];
   if (m == -1) {
     //LA PAGINA NO ESTÁ EN LOS MARCOS
     SwIn = "X";
@@ -152,6 +152,8 @@ function consultarMarco(NumPag, acc) {
   if (acc == "E") {
     PROCESO[3][NumPag] = 1;
   }
+  m = MARCOS_STATUS[1].indexOf("P" + NumPag);
+  var marco = MARCOS_STATUS[0][m];
   return { SwOut: SwOut, SwIn: SwIn, Marco: marco };
 }
 
@@ -169,61 +171,66 @@ function solicitudAcc(iter) {
   ACCIONES[4][iter] = Marco; //Mar
   ACCIONES[5][iter] = SwIn; //SwIn
   ACCIONES[6][iter] = SwOut; //SwOut
+  console.log('iteracion terminada',iter)
   ITER++;
 }
 
-function step(){
-  console.log('Antes:',ITER)
-  solicitudAcc(ITER)
-  console.log('Despues:',ITER)
+function step() {
+  if (ITER < ACCIONES[0].length) {
+    solicitudAcc(ITER);
+    ejecutar();
+  }
 }
 
-function ejecutar(){
-    //debugger
-    var padre =  document.getElementById('tablaprueba')// edit alvaro
-    var tabla=  document.getElementById('pro_T20') // edit alvaro
-    if(tabla.childNodes[3] != undefined) tabla.removeChild(tabla.childNodes[3])
-    var tbd = document.createElement('tbody')// edit alvaro
-    for (let i = 0; i < PROCESO[0].length; i++) {
-        var  hilera = document.createElement('tr')// edit alvaro
-        for (let j = 0; j < PROCESO.length; j++) {
-          var celda = document.createElement('td')// edit alvaro
-          var text= document.createTextNode(PROCESO[j][i])// edit alvaro
-          celda.appendChild(text)// edit alvaro
-          hilera.appendChild(celda)// edit alvaro
-        }
-        tbd.appendChild(hilera)// edit alvaro
+function ejecutar() {
+  document.getElementById("iteracionContainer").style = "display: initial;";
+  var padre = document.getElementById("tablaprueba");
+  var tabla = document.getElementById("pro_T20");
+  if (tabla.childNodes[3] != undefined) tabla.removeChild(tabla.childNodes[3]);
+  var tbd = document.createElement("tbody");
+  for (let i = 0; i < PROCESO[0].length; i++) {
+    var hilera = document.createElement("tr");
+    for (let j = 0; j < PROCESO.length; j++) {
+      var celda = document.createElement("td");
+      var text = document.createTextNode(PROCESO[j][i]);
+      celda.appendChild(text);
+      hilera.appendChild(celda);
     }
-    tabla.appendChild(tbd)// edit alvaro
-    padre.appendChild(tabla)
-    //debugger
-    v = ['ITERACION','DIR LOG','ACCION','DIR FISC','PAGINA','MARCO','SW IN','SW OUT']
-    padre = document.getElementById('padreitr')
-    tabla=  document.getElementById('itr_T')
-    tbd = document.createElement('tbody')
-    console.log(tabla.childNodes)
-   // for (let i =0 ; i < tabla.childNodes.length; i++){
-    //  tabla.removeChild(tabla.childNodes[i])
-    //}
-    tabla.removeChild(tabla.childNodes[1])
-    console.log(tabla.childNodes)
-    for (let i = 1; i < v.length; i++) {
-      var  hilera = document.createElement('tr')// edit alvaro
-      for (let j = 0; j < ACCIONES.length; j++) {
-        if (j==0){
-          var celda = document.createElement('th')//
-          var text= document.createTextNode(v[i])
-        }else{
-          var celda = document.createElement('td')// edit alvaro
-          var text= document.createTextNode(ACCIONES[i-1][j-1])// edit alvaro
-        }
-        celda.appendChild(text)// edit alvaro
-        hilera.appendChild(celda)// edit alvaro
+    tbd.appendChild(hilera);
+  }
+  tabla.appendChild(tbd);
+  padre.appendChild(tabla);
+
+  v = [
+    "ITERACION",
+    "DIR LOG",
+    "ACCION",
+    "DIR FISC",
+    "PAGINA",
+    "MARCO",
+    "SW IN",
+    "SW OUT",
+  ];
+  padre = document.getElementById("padreitr");
+  tabla = document.getElementById("itr_T");
+  tbd = document.createElement("tbody");
+  tabla.removeChild(tabla.childNodes[1]);
+  for (let i = 1; i < v.length; i++) {
+    var hilera = document.createElement("tr");
+    for (let j = 0; j <= ACCIONES[0].length; j++) {
+      if (j == 0) {
+        var celda = document.createElement("th"); //
+        var text = document.createTextNode(v[i]);
+      } else {
+        let tex = ACCIONES[i - 1][j - 1];
+        var celda = document.createElement("td");
+        var text = document.createTextNode(tex == undefined ? "" : tex);
       }
-      tbd.appendChild(hilera)// edit alvaro
+      celda.appendChild(text);
+      hilera.appendChild(celda);
     }
-    tabla.appendChild(tbd)/
-    padre.appendChild(tabla)
+    tbd.appendChild(hilera);
+  }
+  tabla.appendChild(tbd) / padre.appendChild(tabla);
+  debugger;
 }
-
-function testing() {}

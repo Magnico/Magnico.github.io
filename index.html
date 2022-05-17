@@ -17,7 +17,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="/manager.js"></script>
-    <title>Document</title>
+    <title>Memoria V - Paginación Bajo Demanda</title>
   </head>
   <body onload="">
     <div class="card maincard">
@@ -108,8 +108,8 @@
           </button>
         </div>
       </div>
-      <div class="row">
-        <div id="pro_T_T"class="col maincard">
+      <div id="marco_disco" class="row" style="display: none">
+        <div id="pro_T_T" class="col maincard">
           <table id="pro_T" class="table">
             <thead>
               <tr>
@@ -125,161 +125,145 @@
         </div>
       </div>
     </div>
-  <div id = "ejecucion" style="display: none;">
-    <div class="card maincard ">
-      <div class="card-body">
-        <h5 class="card-title">EJECUCION</h5>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+    <div id="ejecucion" style="display: none">
+      <div class="card maincard">
+        <div class="card-body">
+          <h5 class="card-title">EJECUCION</h5>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              style="width: 100%"
+              aria-valuenow="100"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div class="container datos2">
+        <div class="row">
+          <div class="col maincard">
+            <h4>ENTRADA DE DATOS</h4>
+            <form action="">
+              <div class="col-auto">
+                <label for="inputPassword2" class="visually-hidden"
+                  >Dir Logica</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="dirLog"
+                  placeholder="Dir. Lógica"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="acTion">TIPO</label>
+                </div>
+                <select class="custom-select" id="acTion">
+                  <option value="L" selected>LECTURA</option>
+                  <option value="E">ESCRITURA</option>
+                </select>
+              </div>
+            </form>
+            <button
+              id="accBtn"
+              class="btn btn-primary"
+              onclick="ingresarSeñal()"
+            >
+              CARGAR
+            </button>
+          </div>
+          <div class="col maincard grid">
+            <table id="acc_T" style="width: 100%" class="table table-striped">
+              <tr>
+                <th>Dir. Logica</th>
+              </tr>
+              <tr>
+                <th>Acciones</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <button id="ejecBtn" class="btn btn-primary" onclick="ejecutar()">
+            SIMULAR
+          </button>
+        </div>
+        <div id="iteracionContainer" style="display: none;">
+          <div class="card maincard">
+            <div class="card-body">
+              <h5 id='numeroIteracion' class="card-title">Iteración 0</h5>
+              <h5 id='' class="card-title">Velocidad: 1</h5>
+              <div class="progress">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  style="width: 100%"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="row maincard">
+            <div id="tablaprueba" class="col">
+              <table id="pro_T20" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">PAGINA</th>
+                    <th scope="col">DIR FISC</th>
+                    <th scope="col">V/I</th>
+                    <th scope="col">SUCIO</th>
+                    <th scope="col">USOS</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+          <div id="padreitr" class="row maincard">
+            <table id="itr_T" style="width: 100%" class="table table-striped">
+              <tr>
+                <th>ITERACION</th>
+              </tr>
+              <tr>
+                <th>DIR LOG</th>
+              </tr>
+              <tr>
+                <th>ACCION</th>
+              </tr>
+              <tr>
+                <th>DIR FISC</th>
+              </tr>
+              <tr>
+                <th>PAGINA</th>
+              </tr>
+              <tr>
+                <th>MARCO</th>
+              </tr>
+              <tr>
+                <th>SW IN</th>
+              </tr>
+              <tr>
+                <th>SW OUT</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card controles">
+        <h5 class="card-header">CONTROLES</h5>
+        <div class="card-body">
+          <h5 class="card-title">
+            Para detener, adelantar o acelerar la ejecucion
+          </h5>
+          <button onclick="step()" class="btn btn-danger">MOVE BACKWARD</button>
+          <a class="btn btn-primary">▶</a>
+          <a class="btn btn-success">MOVE FORWARD</a>
         </div>
       </div>
     </div>
-<div class = "container  datos2">
-  <div class = "row"> 
-    <div class="col maincard" >
-      <h4>ENTRADA DE DATOS</h4>
-      <form action="">
-        <div class="col-auto">
-          <label for="inputPassword2" class="visually-hidden "
-            >Dir Logica</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            id="dirLog"
-            placeholder="Dir. Lógica"
-          />
-        </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="acTion">TIPO</label>
-          </div>
-          <select class="custom-select " id="acTion">
-            <option value="L" selected>LECTURA</option>
-            <option value="E">ESCRITURA</option>
-          </select>
-
-        </div>
-      </form>
-      <button id='accBtn' class = "btn btn-primary" onclick="ingresarSeñal()">CARGAR</button>
-    </div> 
-    <div class="col maincard grid"> 
-      <table id="acc_T" style="width:100%" class="table table-striped">
-        <tr>
-          <th>Dir. Logica</th>
-        </tr>
-        <tr>
-          <th>Acciones</th>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-
-    <button id='ejecBtn' class = "btn btn-primary" onclick="ejecutar()">SIMULAR</button>
-  </div>
-
-  <div class = "row maincard">
-    <div id="tablaprueba" class="col">
-      <table id="pro_T20" class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">PAGINA</th>
-            <th scope="col">DIR FISC</th>
-            <th scope="col">V/I</th>
-            <th scope="col">SUCIO</th>
-            <th scope="col">USOS</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
-  <div id="padreitr" class="row maincard "> 
-    <table id="itr_T" style="width:100%" class="table table-striped">
-      <tr>
-        <th>ITERACION</th>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-      </tr>
-      <tr>
-        <th>DIR LOG</th>
-        <td>10</td>
-        <td>89</td>
-        <td>64</td>
-        <td>27</td>
-        <td>19</td>
-        <td>19</td>
-      </tr>
-      <tr>
-        <th>ACCION</th>
-        <td>E</td>
-        <td>S</td>
-        <td>E</td>
-        <td>E</td>
-        <td>S</td>
-        <td>S</td>
-      </tr>
-      <tr>
-        <th>DIR FISC</th>
-        <td>10</td>
-        <td>89</td>
-        <td>64</td>
-        <td>27</td>
-        <td>19</td>
-        <td>19</td>
-      </tr>
-      <tr>
-        <th>PAGINA</th>
-        <td>10</td>
-        <td>89</td>
-        <td>64</td>
-        <td>27</td>
-        <td>19</td>
-        <td>19</td>
-      </tr>
-      <tr>
-        <th>MARCO</th>
-        <td>10</td>
-        <td>89</td>
-        <td>64</td>
-        <td>27</td>
-        <td>19</td>
-        <td>19</td>
-      </tr>
-      <tr>
-        <th>SW IN</th>
-        <td>X</td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-      </tr>
-      <tr>
-        <th>SW OUT</th>
-        <td>X</td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-        <td>X</td>
-        <td> </td>
-      </tr>
-    </table>
-  </div>
-</div>
-<div class="card controles">
-  <h5 class="card-header">CONTROLES</h5>
-  <div class="card-body">
-    <h5 class="card-title">Para detener, adelantar o acelerar la ejecucion</h5>
-    <a href="#" onclick="step()" class="btn btn-danger">MOVE BACKWARD </a>
-    <a href="#" class="btn btn-primary">▶</a>
-    <a href="#" class="btn btn-success">MOVE FORWARD</a>
-  </div>
-</div>
-</div>
   </body>
 </html>
