@@ -12,8 +12,9 @@ var ITER = 0;
 var COUNTER = 0;
 var EJEC = false;
 var VELOCITY = 20;
+var MarcoAlg = 'FIFO'
 setTimeout(timer, VELOCITY);
-TIMESTAMP = [Date.now(),Date.now()]
+
 function sortV(vec) {
   return vec.sort(function () {
     return Math.random() - 0.5;
@@ -29,8 +30,6 @@ function timer() {
       "Iteración " + (ITER + 1);
     if ((COUNTER % 100) + 1 == 100) {
       TIMESTAMP[1] = Date.now()
-      console.log((TIMESTAMP[1]-TIMESTAMP[0]),'ITERACION ', ITER, COUNTER)
-      
       solicitudAcc(ITER);
       ejecutar();
 
@@ -40,19 +39,17 @@ function timer() {
   setTimeout(timer,VELOCITY)
   
 }
+
 function setVel(v) {
   VELOCITY = v;
 }
 
 function pauseStart() {
   EJEC = !EJEC;
-  change()
-}
-
-function change(){
   let a = document.getElementById('pausado').innerText
   document.getElementById('pausado').innerText = a == '▶'? '⏸' : '▶';
 }
+
 //__ INICIO __//
 
 function iniciar() {
@@ -89,6 +86,7 @@ function validarData() {
   }
   return false;
 }
+
 function crearProceso() {
   for (let i = 0; i < PROG / MARCO; i++) {
     PROCESO[0].push(i);
@@ -108,6 +106,7 @@ function crearProceso() {
   inHtml += "</tbody>";
   document.getElementById("pro_T").innerHTML = inHtml;
 }
+
 function crearSO() {
   for (let i = 0; i < SOS / MARCO; i++) {
     SO[0].push(i);
@@ -115,6 +114,7 @@ function crearSO() {
   }
   SO[1] = sortV(SO[1]);
 }
+
 function iniciarDisco() {
   crearProceso();
   crearSO();
@@ -164,6 +164,47 @@ function ingresarSeñal() {
   }
   return false;
 }
+
+function calcNextMarcoAlg(){
+  switch (MarcoAlg) {
+    case 'FIFO':
+      console.log('Usamos el FIFO')
+      NextMarco = (NextMarco + 1) % N_MARCO;
+      break;
+    case 'LRU':
+      let min = ACCIONES[0].length + 1
+      LRU = -1
+      for (let i = 0; i < PROCESO[0].length; i++) {
+        if (PROCESO[4][i]<min & PROCESO[2][i] == 1){
+          min = PROCESO[4][i];
+          LRU = i
+        }
+      }
+      console.log('Usamos el LRU')
+      NextMarco = MARCOS_STATUS[1].indexOf('P'+LRU)
+      break;
+    case 'OPT':
+      let temp = []
+      let temp2 = []
+      for (let i = 0; i < PROCESO[0].length; i++) {
+        if(PROCESO[2][i]==1) temp.push(PROCESO[0][i])
+      }
+      for (let i = 0; i < temp.length; i++) {
+        step = ITER
+        while (parseInt(ACCIONES[0][step]/MARCO) != temp[i]  & step<ACCIONES[0].length) {
+          step++;
+        }
+        temp2.push(step)
+      }
+      OPT = temp[temp2.indexOf(Math.max(temp2))]
+      console.log('Usamos el OPT')
+      NextMarco = MARCOS_STATUS[1].indexOf('P'+OPT);
+      break;
+    default:
+      break;
+  }
+}
+
 function consultarMarco(NumPag, acc) {
   var m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   var SwOut = "";
@@ -187,7 +228,7 @@ function consultarMarco(NumPag, acc) {
     }
     MARCOS_STATUS[1][NextMarco] = "P" + NumPag;
     PROCESO[2][NumPag] = 1;
-    NextMarco = (NextMarco + 1) % 2;
+    NextMarco = calcNextMarcoAlg()
   }
 
   if (acc == "E") {
@@ -212,6 +253,7 @@ function solicitudAcc(iter) {
   ACCIONES[4][iter] = Marco; //Mar
   ACCIONES[5][iter] = SwIn; //SwIn
   ACCIONES[6][iter] = SwOut; //SwOut
+  PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
   console.log("iteracion terminada", iter);
   ITER++;
 }
