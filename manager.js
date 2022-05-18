@@ -29,11 +29,8 @@ function timer() {
     document.getElementById("numeroIteracion").innerText =
       "Iteración " + (ITER + 1);
     if ((COUNTER % 100) + 1 == 100) {
-      TIMESTAMP[1] = Date.now()
       solicitudAcc(ITER);
       ejecutar();
-
-      TIMESTAMP[0] = Date.now()
     }
   }
   setTimeout(timer,VELOCITY)
@@ -168,8 +165,9 @@ function ingresarSeñal() {
 function calcNextMarcoAlg(){
   switch (MarcoAlg) {
     case 'FIFO':
-      console.log('Usamos el FIFO')
+      console.log('Usamos el FIFO', ITER,NextMarco)
       NextMarco = (NextMarco + 1) % N_MARCO;
+      console.log(NextMarco)
       break;
     case 'LRU':
       let min = ACCIONES[0].length + 1
@@ -209,6 +207,7 @@ function consultarMarco(NumPag, acc) {
   var m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   var SwOut = "";
   var SwIn = "";
+  var oldpag = ''
   if (m == -1) {
     //LA PAGINA NO ESTÁ EN LOS MARCOS
     SwIn = "X";
@@ -217,7 +216,9 @@ function consultarMarco(NumPag, acc) {
       //COMPROBAMOS SI EL PROXIMO MARCO ESTÁ VACIO
       //EL PROXIMO MARCO NO ESTÁ VACIO
       Reemplazos++; // HAY REEMPLAZO
+      console.log('AQUI ',NextMarco,MARCOS_STATUS[1][NextMarco])
       index = parseInt(MARCOS_STATUS[1][NextMarco].substr(-1));
+      oldpag = index
       //BUSCAMOS EL LA PAGINA QUE ESTABA EN EL MARCO
       if (PROCESO[3][index] == 1) {
         //VERIFICAMOS SI HUBO HAY SWAPOUT
@@ -228,7 +229,7 @@ function consultarMarco(NumPag, acc) {
     }
     MARCOS_STATUS[1][NextMarco] = "P" + NumPag;
     PROCESO[2][NumPag] = 1;
-    NextMarco = calcNextMarcoAlg()
+    calcNextMarcoAlg()
   }
 
   if (acc == "E") {
@@ -236,7 +237,7 @@ function consultarMarco(NumPag, acc) {
   }
   m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   var marco = MARCOS_STATUS[0][m];
-  return { SwOut: SwOut, SwIn: SwIn, Marco: marco };
+  return { SwOut: SwOut, SwIn: SwIn, Marco: marco ,OldPag : oldpag};
 }
 
 function solicitudAcc(iter) {
@@ -246,7 +247,7 @@ function solicitudAcc(iter) {
   var Desp = DirLog % MARCO;
   var DirFisc = PROCESO[1][PROCESO[0].indexOf(NumPag)] * MARCO + Desp;
   var obj = consultarMarco(NumPag, Acc);
-  var { SwOut, SwIn, Marco } = obj;
+  var { SwOut, SwIn, Marco, OldPag } = obj;
   //DirLog - Acc - DirFis - Pag - Marco - SwIn - SwOut
   ACCIONES[2][iter] = DirFisc; //DirFis
   ACCIONES[3][iter] = NumPag; //Pag
@@ -254,7 +255,7 @@ function solicitudAcc(iter) {
   ACCIONES[5][iter] = SwIn; //SwIn
   ACCIONES[6][iter] = SwOut; //SwOut
   PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
-  console.log("iteracion terminada", iter);
+  comentarista(OldPag)
   ITER++;
 }
 
@@ -309,4 +310,16 @@ function ejecutar() {
     tbd.appendChild(hilera);
   }
   tabla.appendChild(tbd) / padre.appendChild(tabla);
+}
+
+function comentarista(oldpag){
+  //0 DirLog - 1 Acc - 2 DirFis - 3 Pag - 4 Marco - 5 SwIn - 6 SwOut
+  let celda = document.createElement("li")
+  comment = 'Iteración '+ITER+': '
+  comment+= ACCIONES[1][ITER] == 'L'? 'Lectura Pag#':'Escritura Pag#'
+  comment+= ACCIONES[3][ITER]
+  comment+= ' - '+(ACCIONES[5][ITER] == 'X'? 'Fallo de Pagina':'Pagina en Marcos')
+  comment+= ACCIONES[6][ITER] == 'X'? ' - Pag#'+oldpag+' Guardada en Disco':''
+  celda.appendChild(document.createTextNode(comment))
+  document.getElementById('Comments').appendChild(celda)
 }
