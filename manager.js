@@ -25,7 +25,7 @@ function timer() {
   if ((ITER < ACCIONES[0].length) & EJEC) {
     COUNTER ++;
     document.getElementById("avancemosColombia").style =
-      "width: " + (COUNTER % 100) + "%";
+      "width: " + (COUNTER % 100) + "%; background-color: rgba("+(220 + (-92/100*(COUNTER % 100)))+","+(20 + (235/100*(COUNTER % 100)))+","+(60 + (-60/100*(COUNTER % 100)))+",0.6)";
     document.getElementById("numeroIteracion").innerText =
       "Iteración " + (ITER + 1);
     if ((COUNTER % 100) + 1 == 100) {
