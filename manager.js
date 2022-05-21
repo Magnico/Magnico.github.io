@@ -1,4 +1,4 @@
-const N_MARCO = 2;
+var N_MARCO = 2;
 var SOS, MARCO, PROG;
 var DISCO = [];
 var SO = [[], []];
@@ -70,17 +70,22 @@ function iniciar() {
 }
 
 function validarData() {
-  iniciar();
   var so = document.getElementById("tam_SO").value;
   var marco = document.getElementById("tam_MAR").value;
   var prog = document.getElementById("tam_PROG").value;
-  if ((so > 0) & (marco > 0) & (prog > 0)) {
+  var marconum = document.getElementById('num_MAR').value;
+  var alg = document.querySelector('input[name="ALG"]:checked').value;
+  if ((so > 0) & (marco > 0) & (prog > 0) & (marconum > 0)) {
+    iniciar();
     SOS = parseInt(so);
     MARCO = parseInt(marco);
     PROG = parseInt(prog);
+    N_MARCO = parseInt(marconum)
+    MarcoAlg = alg
     iniciarDisco();
     return true;
   }
+  alert('Ingrese los datos validos')
   return false;
 }
 
@@ -132,7 +137,21 @@ function iniciarDisco() {
   }
   inHtml = "";
   DISCO.forEach((D) => {
-    inHtml += '<div class="proceso box">' + D + "</div>\n";
+    let clase = ''
+    switch (D.charAt(0)) {
+      case 'M':
+        clase = 'disc_marco'
+        break;
+      case 'P':
+        clase = 'disc_proceso'
+        break;
+      case 'S':
+        clase = 'disc_SO'
+        break;
+      default:
+        break;
+    }
+    inHtml += '<div class="proceso box '+clase+'">' + D + "</div>\n";
   });
   document.getElementById("ejecucion").style = "display: initial;";
   document.getElementById("disco_T").innerHTML = inHtml;
