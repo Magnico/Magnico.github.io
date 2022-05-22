@@ -220,26 +220,18 @@
                   >Dir Logica</label
                 >
                 <input
-                  type="number"
+                  type="file"
                   class="form-control"
-                  id="dirLog"
-                  placeholder="Dir. Lógica"
+                  id="direcciones"
+                  accept=".csv"
+                  placeholder="Instrucciones"
                 />
-              </div>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="acTion">TIPO</label>
-                </div>
-                <select class="custom-select" id="acTion">
-                  <option value="L" selected>LECTURA</option>
-                  <option value="E">ESCRITURA</option>
-                </select>
               </div>
             </form>
             <button
               id="accBtn"
               class="btn btn-primary"
-              onclick="ingresarSeñal()"
+              onclick="ingresarSeñales()"
             >
               CARGAR
             </button>
@@ -320,8 +312,9 @@
               </tr>
             </table>
           </div>
-          <ul id="Comments">
-
+          
+          <ul id="Comments" class="list-group list-group-flush shadow p-3 mb-5 bg-white rounded">
+            <li class="list-group-item active">BITACORA</li>
           </ul>
         </div>
       </div>

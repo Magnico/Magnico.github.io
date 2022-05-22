@@ -1,3 +1,4 @@
+const fr = new FileReader();
 var N_MARCO = 2;
 var SOS, MARCO, PROG;
 var DISCO = [];
@@ -158,24 +159,29 @@ function iniciarDisco() {
 }
 
 //__ INPUT SEÑALES __//
-function ingresarSeñal() {
+function ingresarSeñales() {
   document.getElementById("ejecBtn").disabled = false;
-  var dir = document.getElementById("dirLog").value;
-  var acc = document.getElementById("acTion").value;
-  if ((dir >= 0) & (dir < PROG)) {
-    ACCIONES[0].push(dir);
-    ACCIONES[1].push(acc);
-    inHtml = "";
-    let a = "<tr><th>Dir. Lógica</th>",
-      b = "<tr><th>Acciones</th>";
-    for (let i = 0; i < ACCIONES[0].length; i++) {
-      a += "<td>" + ACCIONES[0][i] + "</td>";
-      b += "<td>" + ACCIONES[1][i] + "</td>";
+  var file = document.getElementById("direcciones").files[0]
+  
+  if (file != undefined) {
+    fr.onload=function(){
+      FILE = prepararData(fr.result)
+      ACCIONES[0] = (FILE[0]);
+      ACCIONES[1] = (FILE[1]);
+      inHtml = "";
+      let a = "<tr><th>Dir. Lógica</th>",
+        b = "<tr><th>Acciones</th>";
+      
+      for (let i = 0; i < ACCIONES[0].length; i++) {
+        a += "<td>" + ACCIONES[0][i] + "</td>";
+        b += "<td>" + ACCIONES[1][i] + "</td>";
+      }
+      a += "</tr>";
+      b += "</tr>";
+      inHtml = a + b;
+      document.getElementById("acc_T").innerHTML = inHtml;
     }
-    a += "</tr>";
-    b += "</tr>";
-    inHtml = a + b;
-    document.getElementById("acc_T").innerHTML = inHtml;
+    fr.readAsText(file)
     return true;
   }
   return false;
@@ -184,9 +190,8 @@ function ingresarSeñal() {
 function calcNextMarcoAlg(){
   switch (MarcoAlg) {
     case 'FIFO':
-      console.log('Usamos el FIFO', ITER,NextMarco)
+      console.log('Usamos el FIFO')
       NextMarco = (NextMarco + 1) % N_MARCO;
-      console.log(NextMarco)
       break;
     case 'LRU':
       let min = ACCIONES[0].length + 1
@@ -235,7 +240,6 @@ function consultarMarco(NumPag, acc) {
       //COMPROBAMOS SI EL PROXIMO MARCO ESTÁ VACIO
       //EL PROXIMO MARCO NO ESTÁ VACIO
       Reemplazos++; // HAY REEMPLAZO
-      console.log('AQUI ',NextMarco,MARCOS_STATUS[1][NextMarco])
       index = parseInt(MARCOS_STATUS[1][NextMarco].substr(-1));
       oldpag = index
       //BUSCAMOS EL LA PAGINA QUE ESTABA EN EL MARCO
@@ -265,16 +269,19 @@ function solicitudAcc(iter) {
   var NumPag = parseInt(DirLog / MARCO);
   var Desp = DirLog % MARCO;
   var DirFisc = PROCESO[1][PROCESO[0].indexOf(NumPag)] * MARCO + Desp;
+  var valido = !isNaN(DirFisc)
   var obj = consultarMarco(NumPag, Acc);
   var { SwOut, SwIn, Marco, OldPag } = obj;
   //DirLog - Acc - DirFis - Pag - Marco - SwIn - SwOut
-  ACCIONES[2][iter] = DirFisc; //DirFis
-  ACCIONES[3][iter] = NumPag; //Pag
-  ACCIONES[4][iter] = Marco; //Mar
-  ACCIONES[5][iter] = SwIn; //SwIn
-  ACCIONES[6][iter] = SwOut; //SwOut
-  PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
-  comentarista(OldPag)
+  ACCIONES[2][iter] = valido? DirFisc: 'N/A'; //DirFis
+  ACCIONES[3][iter] = valido? NumPag: ''; //Pag
+  ACCIONES[4][iter] = valido? Marco: ''; //Mar
+  ACCIONES[5][iter] = valido? SwIn: ''; //SwIn
+  ACCIONES[6][iter] = valido? SwOut: ''; //SwOut
+  if (valido) {
+    PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
+  }
+  comentarista(OldPag, valido)
   ITER++;
 }
 
@@ -331,14 +338,35 @@ function ejecutar() {
   tabla.appendChild(tbd) / padre.appendChild(tabla);
 }
 
-function comentarista(oldpag){
+function comentarista(oldpag, valido){
   //0 DirLog - 1 Acc - 2 DirFis - 3 Pag - 4 Marco - 5 SwIn - 6 SwOut
   let celda = document.createElement("li")
   comment = 'Iteración '+ITER+': '
-  comment+= ACCIONES[1][ITER] == 'L'? 'Lectura Pag#':'Escritura Pag#'
-  comment+= ACCIONES[3][ITER]
-  comment+= ' - '+(ACCIONES[5][ITER] == 'X'? 'Fallo de Pagina':'Pagina en Marcos')
-  comment+= ACCIONES[6][ITER] == 'X'? ' - Pag#'+oldpag+' Guardada en Disco':''
+  if (valido){
+    comment+= ACCIONES[1][ITER] == 'L'? 'Lectura Pag#':'Escritura Pag#'
+    comment+= ACCIONES[3][ITER]
+    comment+= ' - '+(ACCIONES[5][ITER] == 'X'? 'Fallo de Pagina':'Pagina en Marcos')
+    comment+= ACCIONES[6][ITER] == 'X'? ' - Pag#'+oldpag+' Guardada en Disco':''
+  }else{
+    comment += 'Dirección Logica '+ ACCIONES[0][ITER]+' Invalida'
+  }
+  
   celda.appendChild(document.createTextNode(comment))
+  celda.classList.add('list-group-item')
   document.getElementById('Comments').appendChild(celda)
+}
+
+
+
+function prepararData(text){
+  let data = text.split('\n')
+  
+  data[0] = data[0].split(',')
+  data[1] = data[1].split(',')
+  for (let i = 0; i < data[0].length; i++) {
+    data[0][i] = parseInt(data[0][i])
+    data[1][i] = data[1][i].charAt(0)
+  }
+  
+  return data
 }
