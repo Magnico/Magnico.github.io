@@ -71,11 +71,11 @@ function iniciar() {
 }
 
 function validarData() {
-  var so = document.getElementById("tam_SO").value;
-  var marco = document.getElementById("tam_MAR").value;
-  var prog = document.getElementById("tam_PROG").value;
-  var marconum = document.getElementById('num_MAR').value;
-  var alg = document.querySelector('input[name="ALG"]:checked').value;
+  let so = document.getElementById("tam_SO").value;
+  let marco = document.getElementById("tam_MAR").value;
+  let prog = document.getElementById("tam_PROG").value;
+  let marconum = document.getElementById('num_MAR').value;
+  let alg = document.querySelector('input[name="ALG"]:checked').value;
   if ((so > 0) & (marco > 0) & (prog > 0) & (marconum > 0)) {
     iniciar();
     SOS = parseInt(so);
@@ -228,10 +228,10 @@ function calcNextMarcoAlg(){
 }
 
 function consultarMarco(NumPag, acc) {
-  var m = MARCOS_STATUS[1].indexOf("P" + NumPag);
-  var SwOut = "";
-  var SwIn = "";
-  var oldpag = ''
+  let m = MARCOS_STATUS[1].indexOf("P" + NumPag);
+  let SwOut = "";
+  let SwIn = "";
+  let oldpag = ''
   if (m == -1) {
     //LA PAGINA NO ESTÁ EN LOS MARCOS
     SwIn = "X";
@@ -259,28 +259,30 @@ function consultarMarco(NumPag, acc) {
     PROCESO[3][NumPag] = 1;
   }
   m = MARCOS_STATUS[1].indexOf("P" + NumPag);
-  var marco = MARCOS_STATUS[0][m];
+  let marco = MARCOS_STATUS[0][m];
   return { SwOut: SwOut, SwIn: SwIn, Marco: marco ,OldPag : oldpag};
 }
 
 function solicitudAcc(iter) {
-  var DirLog = ACCIONES[0][iter];
-  var Acc = ACCIONES[1][iter];
-  var NumPag = parseInt(DirLog / MARCO);
-  var Desp = DirLog % MARCO;
-  var DirFisc = PROCESO[1][PROCESO[0].indexOf(NumPag)] * MARCO + Desp;
-  var valido = !isNaN(DirFisc)
-  var obj = consultarMarco(NumPag, Acc);
-  var { SwOut, SwIn, Marco, OldPag } = obj;
+  let DirLog = ACCIONES[0][iter];
+  let Acc = ACCIONES[1][iter];
+  let NumPag = parseInt(DirLog / MARCO);
+  let Desp = DirLog % MARCO;
+  let DirFisc = PROCESO[1][PROCESO[0].indexOf(NumPag)] * MARCO + Desp;
+  let valido = !isNaN(DirFisc)
+  
+  if (valido) {
+    PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
+    let obj = consultarMarco(NumPag, Acc);
+    var { SwOut, SwIn, Marco, OldPag } = obj;
+  }
   //DirLog - Acc - DirFis - Pag - Marco - SwIn - SwOut
   ACCIONES[2][iter] = valido? DirFisc: 'N/A'; //DirFis
   ACCIONES[3][iter] = valido? NumPag: ''; //Pag
   ACCIONES[4][iter] = valido? Marco: ''; //Mar
   ACCIONES[5][iter] = valido? SwIn: ''; //SwIn
   ACCIONES[6][iter] = valido? SwOut: ''; //SwOut
-  if (valido) {
-    PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
-  }
+  
   comentarista(OldPag, valido)
   ITER++;
 }
@@ -336,6 +338,7 @@ function ejecutar() {
     tbd.appendChild(hilera);
   }
   tabla.appendChild(tbd) / padre.appendChild(tabla);
+  drawMarco()
 }
 
 function comentarista(oldpag, valido){
@@ -369,4 +372,49 @@ function prepararData(text){
   }
   
   return data
+}
+
+function drawMarco(){
+  let container = document.getElementById('MarcosContainer')
+  container.removeChild(document.getElementById('ToBeDeleted'))
+
+  let table = document.createElement('ul')
+  table.id = 'ToBeDeleted'
+  table.classList.add('list-group', 'list-group-flush', 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded')
+
+  let header = document.createElement('li')
+  let m = document.createElement('span');
+  let p = document.createElement('span');
+  m.appendChild(document.createTextNode('Marco'))
+  p.appendChild(document.createTextNode('Pagina'))
+  header.classList.add('list-group-item','list-group-item-danger','bold')
+  header.appendChild(m)
+  header.appendChild(p)
+  header.style.display = 'flex'
+  header.style.justifyContent = 'space-around'
+
+
+  let title = document.createElement('li')
+  title.appendChild(document.createTextNode('Tabla de Marcos Libres'))
+  title.classList.add('list-group-item-success','list-group-item','bold')
+  title.style.display = 'flex'
+  title.style.justifyContent = 'space-evenly'
+  
+  table.appendChild(title)
+  table.appendChild(header)
+  for (let i = 0; i < MARCOS_STATUS[0].length; i++) {
+    let row = document.createElement('li')
+    row.style.display = 'flex'
+    row.style.justifyContent = 'space-around'
+    let c1 = document.createElement('span')
+    let c2 = document.createElement('span')
+    c1.appendChild(document.createTextNode(MARCOS_STATUS[0][i]))
+    c2.appendChild(document.createTextNode(MARCOS_STATUS[1][i]))
+    
+    row.appendChild(c1)
+    row.appendChild(c2)
+    row.classList.add('list-group-item')
+    table.appendChild(row)
+  }
+  container.appendChild(table)
 }
