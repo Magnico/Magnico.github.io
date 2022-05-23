@@ -38,8 +38,9 @@ function timer() {
   
 }
 
-function setVel(v) {
+function setVel(v,vel) {
   VELOCITY = v;
+  document.getElementById('velocidadIteracion').innerText = 'Velocidad: '+vel
 }
 
 function pauseStart() {
@@ -420,10 +421,16 @@ function drawMarco(){
 }
 
 function imprimirBitacora(){
-  var ficha = document.getElementById('Comments');
+  var ficha = document.getElementById('iteracionContainer');
   var ventimp = window.open(' ', 'popimpr');
-  ventimp.document.write( ficha.innerHTML );
+  ventimp.document.write('<html>')
+  ventimp.document.write('<head><link  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"  crossorigin="anonymous"/><link rel="stylesheet" href="styles.css" /></head>')
+  ventimp.document.write('<body>'+ ficha.innerHTML +'</body>');
+  ventimp.document.write('</html>')
   ventimp.document.close();
-  ventimp.print( );
-  ventimp.close();
+  setTimeout(()=>{
+    ventimp.print();
+    ventimp.close();
+  },10)
+  
 }
