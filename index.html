@@ -22,9 +22,11 @@
   <body onload="">
     <div class="card maincard">
       <div class="card-body">
-        <h5 class="card-title">Memoria Virtual</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Simulador</h6>
-        <p class="card-text">Descripcion aqui del contenido</p>
+        <h3 class="card-title">Memoria Virtual</h5>
+        <h4 class="card-subtitle mb-2 text-muted">Simulador</h6>
+        <h6 class="card-text">El presente programa simulará la paginación bajo demanda de la ejecución de un proceso en Memoria</h6>
+        <h6 class="card-text">Cada Iteración equivale a un milisegundo (ms), y habrá tantas iteraciones como entradas del programa se indiquen</h6>
+        <h6 class="card-text">Para reiniciar el programa e ingresar nuevas entradas</h6>
       </div>
     </div>
 
@@ -248,7 +250,7 @@
           </div>
         </div>
         <div class="row">
-          <button id="ejecBtn" class="btn btn-primary" onclick="ejecutar()">
+          <button id="ejecBtn" class="btn btn-primary" onclick="document.getElementById('accBtn').disabled = true;document.getElementById('ejecBtn').disabled = true; ejecutar()">
             SIMULAR
           </button>
         </div>
@@ -329,8 +331,9 @@
           <button onclick="pauseStart()" class="btn btn-danger" id="pausado">▶</button>
           <button onclick="setVel(40)" class="btn btn-danger">V0.5</button>
           <button onclick="setVel(20)" class="btn btn-primary">V1</button>
-          <button onclick="setVel(10)" class="btn btn-success">V2</a>
-          <button onclick="setVel(5)"  class="btn btn-success">V3</a>
+          <button onclick="setVel(10)" class="btn btn-success">V2</button>
+          <button onclick="setVel(5)"  class="btn btn-success">V3</button>
+          <button onclick="imprimirBitacora()"  class="btn btn-warning">PRT</button>
         </div>
       </div>
     </div>
