@@ -78,9 +78,9 @@ function iniciar() {
   document.getElementById("iteracionContainer").style = "display: none;";
   li = document.createElement('li')
   li.classList.add('list-group-item', 'active','bold')
-  li.appendChild(document.createTextNode('BITACORA'))
+  li.appendChild(document.createTextNode('BITÁCORA'))
   document.getElementById("Comments").replaceChildren(li)
-  document.getElementById("falloPagina").innerHTML = 'Fallos de Pagina: 0'
+  document.getElementById("falloPagina").innerHTML = 'Fallos de Página: 0'
   document.getElementById("reemplazos").innerHTML = 'Reemplazos: 0'
 }
 
@@ -114,7 +114,7 @@ function crearProceso() {
   }
 
   inHtml =
-    '<thead><tr><th scope="col">PAGINA</th><th scope="col">MARCO</th></tr></thead><tbody>';
+    '<thead><tr><th scope="col">PÁGINA</th><th scope="col">MARCO</th></tr></thead><tbody>';
   PROCESO[1] = sortV(PROCESO[1]);
   for (let i = 0; i < PROCESO[0].length; i++) {
     inHtml +=
@@ -341,11 +341,11 @@ function ejecutar() {
   padre.appendChild(tabla);
 
   v = [
-    "ITERACION",
+    "ITERACIÓN",
     "DIR LOG",
-    "ACCION",
+    "ACCIÓN",
     "DIR FISC",
-    "PAGINA",
+    "PÁGINA",
     "MARCO",
     "SW IN",
     "SW OUT",
@@ -372,7 +372,7 @@ function ejecutar() {
   }
   tabla.appendChild(tbd) / padre.appendChild(tabla);
 
-  document.getElementById("falloPagina").innerText = 'Fallos de Pagina: '+ PageFallos
+  document.getElementById("falloPagina").innerText = 'Fallos de Página: '+ PageFallos
   document.getElementById("reemplazos").innerText = 'Reemplazos: '+ Reemplazos
   drawMarco();
 }
@@ -386,11 +386,11 @@ function comentarista(oldpag, valido) {
     comment += ACCIONES[3][ITER];
     comment +=
       " - " +
-      (ACCIONES[5][ITER] == "X" ? "Fallo de Pagina" : "Pagina en Marcos");
+      (ACCIONES[5][ITER] == "X" ? "Fallo de Página" : "Página en Marcos");
     comment +=
       ACCIONES[6][ITER] == "X" ? " - Pag#" + oldpag + " Guardada en Disco" : "";
   } else {
-    comment += "Dirección Logica " + ACCIONES[0][ITER] + " Invalida";
+    comment += "Dirección Lógica " + ACCIONES[0][ITER] + " Invalida";
   }
 
   celda.appendChild(document.createTextNode(comment));
@@ -431,7 +431,7 @@ function drawMarco() {
   let m = document.createElement("span");
   let p = document.createElement("span");
   m.appendChild(document.createTextNode("Marco"));
-  p.appendChild(document.createTextNode("Pagina"));
+  p.appendChild(document.createTextNode("Página"));
   header.classList.add("list-group-item", "list-group-item-danger", "bold");
   header.appendChild(m);
   header.appendChild(p);
