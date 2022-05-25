@@ -26,7 +26,7 @@
         <h4 class="card-subtitle mb-2 text-muted">Simulador</h6>
         <h6 class="card-text">El presente programa simulará la paginación bajo demanda de la ejecución de un proceso en Memoria</h6>
         <h6 class="card-text">Cada Iteración equivale a un milisegundo (ms), y habrá tantas iteraciones como entradas del programa se indiquen</h6>
-        <h6 class="card-text">Para reiniciar el programa e ingresar nuevas entradas</h6>
+        <h6 class="card-text">Para reiniciar el programa e ingresar nuevas entradas, debe volver a la primera sección de entrada de datos y darle nuevamente al botón cargar</h6>
       </div>
     </div>
 
@@ -259,6 +259,8 @@
             <div class="card-body">
               <h5 id='numeroIteracion' class="card-title">Iteración 0</h5>
               <h5 id='velocidadIteracion' class="card-title">Velocidad: 1</h5>
+              <h5 id="falloPagina">Fallos de Pagina: 0</h5>
+              <h5 id="reemplazos">Reemplazos: 0</h5>
               <div id='avancemosColombia' class="progress">
                 <div
                   class="progress-bar"
@@ -333,7 +335,7 @@
           <button onclick="setVel(20,1)" class="btn btn-primary">V1</button>
           <button onclick="setVel(10,2)" class="btn btn-success">V2</button>
           <button onclick="setVel(5,3)"  class="btn btn-success">V3</button>
-          <button onclick="imprimirBitacora()"  class="btn btn-warning">PRT</button>
+          <button onclick="imprimirBitacora()"  class="btn btn-warning">PRINT</button>
         </div>
       </div>
     </div>

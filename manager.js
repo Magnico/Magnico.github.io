@@ -13,7 +13,7 @@ var ITER = 0;
 var COUNTER = 0;
 var EJEC = false;
 var VELOCITY = 20;
-var MarcoAlg = 'FIFO'
+var MarcoAlg = "FIFO";
 setTimeout(timer, VELOCITY);
 
 function sortV(vec) {
@@ -24,9 +24,17 @@ function sortV(vec) {
 
 function timer() {
   if ((ITER < ACCIONES[0].length) & EJEC) {
-    COUNTER ++;
+    COUNTER++;
     document.getElementById("avancemosColombia").style =
-      "width: " + (COUNTER % 100) + "%; background-color: rgba("+(220 + (-92/100*(COUNTER % 100)))+","+(20 + (235/100*(COUNTER % 100)))+","+(60 + (-60/100*(COUNTER % 100)))+",0.6)";
+      "width: " +
+      (COUNTER % 100) +
+      "%; background-color: rgba(" +
+      (220 + (-92 / 100) * (COUNTER % 100)) +
+      "," +
+      (20 + (235 / 100) * (COUNTER % 100)) +
+      "," +
+      (60 + (-60 / 100) * (COUNTER % 100)) +
+      ",0.6)";
     document.getElementById("numeroIteracion").innerText =
       "Iteración " + (ITER + 1);
     if ((COUNTER % 100) + 1 == 100) {
@@ -34,19 +42,18 @@ function timer() {
       ejecutar();
     }
   }
-  setTimeout(timer,VELOCITY)
-  
+  setTimeout(timer, VELOCITY);
 }
 
-function setVel(v,vel) {
+function setVel(v, vel) {
   VELOCITY = v;
-  document.getElementById('velocidadIteracion').innerText = 'Velocidad: '+vel
+  document.getElementById("velocidadIteracion").innerText = "Velocidad: " + vel;
 }
 
 function pauseStart() {
   EJEC = !EJEC;
-  let a = document.getElementById('pausado').innerText
-  document.getElementById('pausado').innerText = a == '▶'? '⏸' : '▶';
+  let a = document.getElementById("pausado").innerText;
+  document.getElementById("pausado").innerText = a == "▶" ? "⏸" : "▶";
 }
 
 //__ INICIO __//
@@ -69,25 +76,31 @@ function iniciar() {
   document.getElementById("accBtn").disabled = false;
   document.getElementById("ejecBtn").disabled = true;
   document.getElementById("iteracionContainer").style = "display: none;";
+  li = document.createElement('li')
+  li.classList.add('list-group-item', 'active','bold')
+  li.appendChild(document.createTextNode('BITACORA'))
+  document.getElementById("Comments").replaceChildren(li)
+  document.getElementById("falloPagina").innerHTML = 'Fallos de Pagina: 0'
+  document.getElementById("reemplazos").innerHTML = 'Reemplazos: 0'
 }
 
 function validarData() {
   let so = document.getElementById("tam_SO").value;
   let marco = document.getElementById("tam_MAR").value;
   let prog = document.getElementById("tam_PROG").value;
-  let marconum = document.getElementById('num_MAR').value;
+  let marconum = document.getElementById("num_MAR").value;
   let alg = document.querySelector('input[name="ALG"]:checked').value;
   if ((so > 0) & (marco > 0) & (prog > 0) & (marconum > 0)) {
     iniciar();
     SOS = parseInt(so);
     MARCO = parseInt(marco);
     PROG = parseInt(prog);
-    N_MARCO = parseInt(marconum)
-    MarcoAlg = alg
+    N_MARCO = parseInt(marconum);
+    MarcoAlg = alg;
     iniciarDisco();
     return true;
   }
-  alert('Ingrese los datos validos')
+  alert("Ingrese los datos validos");
   return false;
 }
 
@@ -139,21 +152,21 @@ function iniciarDisco() {
   }
   inHtml = "";
   DISCO.forEach((D) => {
-    let clase = ''
+    let clase = "";
     switch (D.charAt(0)) {
-      case 'M':
-        clase = 'disc_marco'
+      case "M":
+        clase = "disc_marco";
         break;
-      case 'P':
-        clase = 'disc_proceso'
+      case "P":
+        clase = "disc_proceso";
         break;
-      case 'S':
-        clase = 'disc_SO'
+      case "S":
+        clase = "disc_SO";
         break;
       default:
         break;
     }
-    inHtml += '<div class="proceso box '+clase+'">' + D + "</div>\n";
+    inHtml += '<div class="proceso box ' + clase + '">' + D + "</div>\n";
   });
   document.getElementById("ejecucion").style = "display: initial;";
   document.getElementById("disco_T").innerHTML = inHtml;
@@ -162,17 +175,17 @@ function iniciarDisco() {
 //__ INPUT SEÑALES __//
 function ingresarSeñales() {
   document.getElementById("ejecBtn").disabled = false;
-  var file = document.getElementById("direcciones").files[0]
-  
+  var file = document.getElementById("direcciones").files[0];
+
   if (file != undefined) {
-    fr.onload=function(){
-      FILE = prepararData(fr.result)
-      ACCIONES[0] = (FILE[0]);
-      ACCIONES[1] = (FILE[1]);
+    fr.onload = function () {
+      FILE = prepararData(fr.result);
+      ACCIONES[0] = FILE[0];
+      ACCIONES[1] = FILE[1];
       inHtml = "";
       let a = "<tr><th>Dir. Lógica</th>",
         b = "<tr><th>Acciones</th>";
-      
+
       for (let i = 0; i < ACCIONES[0].length; i++) {
         a += "<td>" + ACCIONES[0][i] + "</td>";
         b += "<td>" + ACCIONES[1][i] + "</td>";
@@ -181,47 +194,57 @@ function ingresarSeñales() {
       b += "</tr>";
       inHtml = a + b;
       document.getElementById("acc_T").innerHTML = inHtml;
-    }
-    fr.readAsText(file)
+    };
+    fr.readAsText(file);
     return true;
   }
   return false;
 }
 
-function calcNextMarcoAlg(){
+function calcNextMarcoAlg() {
   switch (MarcoAlg) {
-    case 'FIFO':
-      console.log('Usamos el FIFO')
+    case "FIFO":
+      console.log("Usamos el FIFO");
       NextMarco = (NextMarco + 1) % N_MARCO;
       break;
-    case 'LRU':
-      let min = ACCIONES[0].length + 1
-      LRU = -1
+    case "LRU":
+      let min = ACCIONES[0].length + 1;
+      LRU = -1;
       for (let i = 0; i < PROCESO[0].length; i++) {
-        if (PROCESO[4][i]<min & PROCESO[2][i] == 1){
+        if ((PROCESO[4][i] < min) & (PROCESO[2][i] == 1)) {
           min = PROCESO[4][i];
-          LRU = i
+          LRU = i;
         }
       }
-      console.log('Usamos el LRU')
-      NextMarco = MARCOS_STATUS[1].indexOf('P'+LRU)
+      console.log("Usamos el LRU");
+      NextMarco = MARCOS_STATUS[1].indexOf("P" + LRU);
       break;
-    case 'OPT':
-      let temp = []
-      let temp2 = []
+    case "OPT":
+      let temp = [];
+      let temp2 = [];
+      alert('Numero de pags = ',PROCESO[0])
+      console.log('Numero de pags = ',PROCESO[0])
       for (let i = 0; i < PROCESO[0].length; i++) {
-        if(PROCESO[2][i]==1) temp.push(PROCESO[0][i])
+        if (PROCESO[2][i] == 1) temp.push(PROCESO[0][i]);
       }
+      alert(temp)
+      console.log(temp)
       for (let i = 0; i < temp.length; i++) {
-        step = ITER
-        while (parseInt(ACCIONES[0][step]/MARCO) != temp[i]  & step<ACCIONES[0].length) {
+        step = ITER;
+        while (
+          (parseInt(ACCIONES[0][step] / MARCO) != temp[i]) &
+          (step < ACCIONES[0].length-1)
+        ) {
           step++;
         }
-        temp2.push(step)
+        temp2.push(step);
       }
-      OPT = temp[temp2.indexOf(Math.max(temp2))]
-      console.log('Usamos el OPT')
-      NextMarco = MARCOS_STATUS[1].indexOf('P'+OPT);
+      alert(temp2)
+      console.log(temp2)
+      console.log(Math.max(...temp2))
+      OPT = temp[temp2.indexOf(Math.max(...temp2))];
+      console.log("Usamos el OPT");
+      NextMarco = MARCOS_STATUS[1].indexOf("P" + OPT);
       break;
     default:
       break;
@@ -232,9 +255,17 @@ function consultarMarco(NumPag, acc) {
   let m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   let SwOut = "";
   let SwIn = "";
-  let oldpag = ''
+  let oldpag = "";
   if (m == -1) {
     //LA PAGINA NO ESTÁ EN LOS MARCOS
+    if (ITER != 0) {
+      if (MARCOS_STATUS[1][(NextMarco + 1) % N_MARCO] == "") {
+        NextMarco++;
+      } else {
+        calcNextMarcoAlg();
+      }
+    }
+
     SwIn = "X";
     PageFallos++; // COMO NO ESTÁ LA PAGINA HAY FALLO DE PAGINA
     if (MARCOS_STATUS[1][NextMarco] != "") {
@@ -242,7 +273,7 @@ function consultarMarco(NumPag, acc) {
       //EL PROXIMO MARCO NO ESTÁ VACIO
       Reemplazos++; // HAY REEMPLAZO
       index = parseInt(MARCOS_STATUS[1][NextMarco].substr(-1));
-      oldpag = index
+      oldpag = index;
       //BUSCAMOS EL LA PAGINA QUE ESTABA EN EL MARCO
       if (PROCESO[3][index] == 1) {
         //VERIFICAMOS SI HUBO HAY SWAPOUT
@@ -253,7 +284,8 @@ function consultarMarco(NumPag, acc) {
     }
     MARCOS_STATUS[1][NextMarco] = "P" + NumPag;
     PROCESO[2][NumPag] = 1;
-    calcNextMarcoAlg()
+
+    //AQUI SE CALCULABA EL PROXIMO MARCO
   }
 
   if (acc == "E") {
@@ -261,7 +293,7 @@ function consultarMarco(NumPag, acc) {
   }
   m = MARCOS_STATUS[1].indexOf("P" + NumPag);
   let marco = MARCOS_STATUS[0][m];
-  return { SwOut: SwOut, SwIn: SwIn, Marco: marco ,OldPag : oldpag};
+  return { SwOut: SwOut, SwIn: SwIn, Marco: marco, OldPag: oldpag };
 }
 
 function solicitudAcc(iter) {
@@ -270,21 +302,21 @@ function solicitudAcc(iter) {
   let NumPag = parseInt(DirLog / MARCO);
   let Desp = DirLog % MARCO;
   let DirFisc = PROCESO[1][PROCESO[0].indexOf(NumPag)] * MARCO + Desp;
-  let valido = !isNaN(DirFisc)
-  
+  let valido = !isNaN(DirFisc);
+
   if (valido) {
     PROCESO[4][PROCESO[0].indexOf(NumPag)] = iter; //Tiempo
     let obj = consultarMarco(NumPag, Acc);
     var { SwOut, SwIn, Marco, OldPag } = obj;
   }
   //DirLog - Acc - DirFis - Pag - Marco - SwIn - SwOut
-  ACCIONES[2][iter] = valido? DirFisc: 'N/A'; //DirFis
-  ACCIONES[3][iter] = valido? NumPag: ''; //Pag
-  ACCIONES[4][iter] = valido? Marco: ''; //Mar
-  ACCIONES[5][iter] = valido? SwIn: ''; //SwIn
-  ACCIONES[6][iter] = valido? SwOut: ''; //SwOut
-  
-  comentarista(OldPag, valido)
+  ACCIONES[2][iter] = valido ? DirFisc : "N/A"; //DirFis
+  ACCIONES[3][iter] = valido ? NumPag : ""; //Pag
+  ACCIONES[4][iter] = valido ? Marco : ""; //Mar
+  ACCIONES[5][iter] = valido ? SwIn : ""; //SwIn
+  ACCIONES[6][iter] = valido ? SwOut : ""; //SwOut
+
+  comentarista(OldPag, valido);
   ITER++;
 }
 
@@ -339,98 +371,110 @@ function ejecutar() {
     tbd.appendChild(hilera);
   }
   tabla.appendChild(tbd) / padre.appendChild(tabla);
-  drawMarco()
+
+  document.getElementById("falloPagina").innerText = 'Fallos de Pagina: '+ PageFallos
+  document.getElementById("reemplazos").innerText = 'Reemplazos: '+ Reemplazos
+  drawMarco();
 }
 
-function comentarista(oldpag, valido){
+function comentarista(oldpag, valido) {
   //0 DirLog - 1 Acc - 2 DirFis - 3 Pag - 4 Marco - 5 SwIn - 6 SwOut
-  let celda = document.createElement("li")
-  comment = 'Iteración '+ITER+': '
-  if (valido){
-    comment+= ACCIONES[1][ITER] == 'L'? 'Lectura Pag#':'Escritura Pag#'
-    comment+= ACCIONES[3][ITER]
-    comment+= ' - '+(ACCIONES[5][ITER] == 'X'? 'Fallo de Pagina':'Pagina en Marcos')
-    comment+= ACCIONES[6][ITER] == 'X'? ' - Pag#'+oldpag+' Guardada en Disco':''
-  }else{
-    comment += 'Dirección Logica '+ ACCIONES[0][ITER]+' Invalida'
+  let celda = document.createElement("li");
+  comment = "Iteración " + (ITER+1) + ": ";
+  if (valido) {
+    comment += ACCIONES[1][ITER] == "L" ? "Lectura Pag#" : "Escritura Pag#";
+    comment += ACCIONES[3][ITER];
+    comment +=
+      " - " +
+      (ACCIONES[5][ITER] == "X" ? "Fallo de Pagina" : "Pagina en Marcos");
+    comment +=
+      ACCIONES[6][ITER] == "X" ? " - Pag#" + oldpag + " Guardada en Disco" : "";
+  } else {
+    comment += "Dirección Logica " + ACCIONES[0][ITER] + " Invalida";
   }
-  
-  celda.appendChild(document.createTextNode(comment))
-  celda.classList.add('list-group-item')
-  document.getElementById('Comments').appendChild(celda)
+
+  celda.appendChild(document.createTextNode(comment));
+  celda.classList.add("list-group-item");
+  document.getElementById("Comments").appendChild(celda);
 }
 
+function prepararData(text) {
+  let data = text.split("\n");
 
-
-function prepararData(text){
-  let data = text.split('\n')
-  
-  data[0] = data[0].split(',')
-  data[1] = data[1].split(',')
+  data[0] = data[0].split(",");
+  data[1] = data[1].split(",");
   for (let i = 0; i < data[0].length; i++) {
-    data[0][i] = parseInt(data[0][i])
-    data[1][i] = data[1][i].charAt(0)
+    data[0][i] = parseInt(data[0][i]);
+    data[1][i] = data[1][i].charAt(0);
   }
-  
-  return data
+
+  return data;
 }
 
-function drawMarco(){
-  let container = document.getElementById('MarcosContainer')
-  container.removeChild(document.getElementById('ToBeDeleted'))
+function drawMarco() {
+  let container = document.getElementById("MarcosContainer");
+  container.removeChild(document.getElementById("ToBeDeleted"));
 
-  let table = document.createElement('ul')
-  table.id = 'ToBeDeleted'
-  table.classList.add('list-group', 'list-group-flush', 'shadow', 'p-3', 'mb-5', 'bg-white', 'rounded')
+  let table = document.createElement("ul");
+  table.id = "ToBeDeleted";
+  table.classList.add(
+    "list-group",
+    "list-group-flush",
+    "shadow",
+    "p-3",
+    "mb-5",
+    "bg-white",
+    "rounded"
+  );
 
-  let header = document.createElement('li')
-  let m = document.createElement('span');
-  let p = document.createElement('span');
-  m.appendChild(document.createTextNode('Marco'))
-  p.appendChild(document.createTextNode('Pagina'))
-  header.classList.add('list-group-item','list-group-item-danger','bold')
-  header.appendChild(m)
-  header.appendChild(p)
-  header.style.display = 'flex'
-  header.style.justifyContent = 'space-around'
+  let header = document.createElement("li");
+  let m = document.createElement("span");
+  let p = document.createElement("span");
+  m.appendChild(document.createTextNode("Marco"));
+  p.appendChild(document.createTextNode("Pagina"));
+  header.classList.add("list-group-item", "list-group-item-danger", "bold");
+  header.appendChild(m);
+  header.appendChild(p);
+  header.style.display = "flex";
+  header.style.justifyContent = "space-around";
 
+  let title = document.createElement("li");
+  title.appendChild(document.createTextNode("Tabla de Marcos Libres"));
+  title.classList.add("list-group-item-success", "list-group-item", "bold");
+  title.style.display = "flex";
+  title.style.justifyContent = "space-evenly";
 
-  let title = document.createElement('li')
-  title.appendChild(document.createTextNode('Tabla de Marcos Libres'))
-  title.classList.add('list-group-item-success','list-group-item','bold')
-  title.style.display = 'flex'
-  title.style.justifyContent = 'space-evenly'
-  
-  table.appendChild(title)
-  table.appendChild(header)
+  table.appendChild(title);
+  table.appendChild(header);
   for (let i = 0; i < MARCOS_STATUS[0].length; i++) {
-    let row = document.createElement('li')
-    row.style.display = 'flex'
-    row.style.justifyContent = 'space-around'
-    let c1 = document.createElement('span')
-    let c2 = document.createElement('span')
-    c1.appendChild(document.createTextNode(MARCOS_STATUS[0][i]))
-    c2.appendChild(document.createTextNode(MARCOS_STATUS[1][i]))
-    
-    row.appendChild(c1)
-    row.appendChild(c2)
-    row.classList.add('list-group-item')
-    table.appendChild(row)
+    let row = document.createElement("li");
+    row.style.display = "flex";
+    row.style.justifyContent = "space-around";
+    let c1 = document.createElement("span");
+    let c2 = document.createElement("span");
+    c1.appendChild(document.createTextNode(MARCOS_STATUS[0][i]));
+    c2.appendChild(document.createTextNode(MARCOS_STATUS[1][i]));
+
+    row.appendChild(c1);
+    row.appendChild(c2);
+    row.classList.add("list-group-item");
+    table.appendChild(row);
   }
-  container.appendChild(table)
+  container.appendChild(table);
 }
 
-function imprimirBitacora(){
-  var ficha = document.getElementById('iteracionContainer');
-  var ventimp = window.open(' ', 'popimpr');
-  ventimp.document.write('<html>')
-  ventimp.document.write('<head><link  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"  crossorigin="anonymous"/><link rel="stylesheet" href="styles.css" /></head>')
-  ventimp.document.write('<body>'+ ficha.innerHTML +'</body>');
-  ventimp.document.write('</html>')
+function imprimirBitacora() {
+  var ficha = document.getElementById("iteracionContainer");
+  var ventimp = window.open(" ", "popimpr");
+  ventimp.document.write("<html>");
+  ventimp.document.write(
+    '<head><link  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  rel="stylesheet"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"  crossorigin="anonymous"/><link rel="stylesheet" href="styles.css" /></head>'
+  );
+  ventimp.document.write("<body>" + ficha.innerHTML + "</body>");
+  ventimp.document.write("</html>");
   ventimp.document.close();
-  setTimeout(()=>{
+  setTimeout(() => {
     ventimp.print();
     ventimp.close();
-  },10)
-  
+  }, 10);
 }
