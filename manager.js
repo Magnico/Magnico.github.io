@@ -292,7 +292,7 @@ function consultarMarco(NumPag, acc) {
     PROCESO[3][NumPag] = 1;
   }
   m = MARCOS_STATUS[1].indexOf("P" + NumPag);
-  let marco = MARCOS_STATUS[0][m];
+  let marco = MARCOS_STATUS[0][m].substr(-1);
   return { SwOut: SwOut, SwIn: SwIn, Marco: marco, OldPag: oldpag };
 }
 
